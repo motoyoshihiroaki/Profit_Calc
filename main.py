@@ -1,33 +1,24 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
-
-
-# import tkinter as tk
-# from tkinter import ttk
-
-import openpyxl
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import filedialog
 from tkinter import messagebox
 
 import numpy as np
-import os
-import datetime
-
-import json
 from oandapyV20 import API
 from oandapyV20.endpoints.pricing import PricingInfo
 from oandapyV20.exceptions import V20Error
+
+import settings
 
 # 1:アジア、2：ヨーロッパ、３：南米
 area = [1, 2, 3]
 
 def dollar_calc():    
-    accountID = "101-009-16992901-001"
-    access_token = "f7e364ea7596211439220a01ec9b075d-3fe7aa8f160f2beaa88d423b81457594"
+    accountID = settings.ACCOUNTID
+    access_token = settings.ACCESS_TOKEN
     api = API(access_token=access_token, environment="practice")
 
     params = { "instruments": "USD_JPY" }
@@ -38,11 +29,11 @@ def dollar_calc():
         response = pricing_info.response
 
         dollar = float(response["prices"][0]["bids"][0]["price"])
+        return dollar
 
     except V20Error as e:
         print("Error: {}".format(e))
 
-    return dollar
 
 dollar = dollar_calc()
 paypal = 3.9
